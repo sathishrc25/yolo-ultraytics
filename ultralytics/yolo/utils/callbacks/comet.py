@@ -322,8 +322,9 @@ def on_fit_epoch_end(trainer):
     curr_step = metadata['curr_step']
     save_assets = metadata['save_assets']
 
-    experiment.log_metrics(trainer.metrics, step=curr_step, epoch=curr_epoch)
-    experiment.log_metrics(trainer.lr, step=curr_step, epoch=curr_epoch)
+    if trainer.done_val:
+        experiment.log_metrics(trainer.metrics, step=curr_step, epoch=curr_epoch)
+        experiment.log_metrics(trainer.lr, step=curr_step, epoch=curr_epoch)
     if curr_epoch == 1:
         experiment.log_metrics(model_info_for_loggers(trainer), step=curr_step, epoch=curr_epoch)
 
