@@ -52,7 +52,7 @@ from .conv import (
     RepConv,
     SpatialAttention,
 )
-from .head import OBB, Classify, Detect, Pose, RTDETRDecoder, Segment
+from .head import OBB, Classify, Detect, Pose, RTDETRDecoder, Segment, MultiTask
 from .transformer import (
     AIFI,
     MLP,
@@ -114,4 +114,5 @@ __all__ = (
     "MLP",
     "ResNetLayer",
     "OBB",
+    MultiTask,
 )

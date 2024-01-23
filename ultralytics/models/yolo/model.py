@@ -1,8 +1,15 @@
 # Ultralytics YOLO 🚀, AGPL-3.0 license
 
 from ultralytics.engine.model import Model
-from ultralytics.models import yolo
-from ultralytics.nn.tasks import ClassificationModel, DetectionModel, OBBModel, PoseModel, SegmentationModel
+from ultralytics.models import yolo  # noqa
+from ultralytics.nn.tasks import (
+    ClassificationModel,
+    DetectionModel,
+    PoseModel,
+    SegmentationModel,
+    MultiTaskModel,
+    OBBModel,
+)
 
 
 class YOLO(Model):
@@ -35,6 +42,12 @@ class YOLO(Model):
                 "trainer": yolo.pose.PoseTrainer,
                 "validator": yolo.pose.PoseValidator,
                 "predictor": yolo.pose.PosePredictor,
+            },
+            "multitask": {
+                "model": MultiTaskModel,
+                "trainer": yolo.multitask.MultiTaskTrainer,
+                "validator": yolo.multitask.MultiTaskValidator,
+                "predictor": yolo.multitask.MultiTaskPredictor,
             },
             "obb": {
                 "model": OBBModel,
