@@ -40,7 +40,5 @@ class DetectionPredictor(BasePredictor):
             scaled_boxes = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
             new_pred = torch.cat((scaled_boxes, pred[:, 4:]), dim=1)
             img_path = self.batch[0][i]
-            results.append(
-                Results(orig_img, path=img_path, names=self.model.names, boxes=new_pred)
-            )
+            results.append(Results(orig_img, path=img_path, names=self.model.names, boxes=new_pred))
         return results
