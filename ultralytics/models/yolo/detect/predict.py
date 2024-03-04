@@ -31,19 +31,16 @@ class DetectionPredictor(BasePredictor):
             classes=self.args.classes,
         )
 
-        if not isinstance(orig_imgs, list):  # input images are a torch.Tensor, not a list
+        if not isinstance(orig_imgs, list):
             orig_imgs = ops.convert_torch2numpy_batch(orig_imgs)
 
         results = []
         for i, pred in enumerate(preds):
             orig_img = orig_imgs[i]
-            
-            # Scale the boxes without modifying the original pred tensor directly
             scaled_boxes = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
-            # Create a new tensor by combining scaled boxes with the rest of pred
             new_pred = torch.cat((scaled_boxes, pred[:, 4:]), dim=1)
-            
-            # Now, use new_pred instead of trying to modify pred in-place
             img_path = self.batch[0][i]
-            results.append(Results(orig_img, path=img_path, names=self.model.names, boxes=new_pred))
+            results.append(
+                Results(orig_img, path=img_path, names=self.model.names, boxes=new_pred)
+            )
         return results
