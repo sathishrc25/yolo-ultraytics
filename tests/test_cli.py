@@ -4,8 +4,9 @@ import subprocess
 
 import pytest
 
+
 from ultralytics.cfg import TASK2DATA, TASK2MODEL, TASKS
-from ultralytics.utils import ASSETS, WEIGHTS_DIR, checks
+from ultralytics.utils import ARM64, ASSETS, MACOS, WEIGHTS_DIR, checks
 
 from tests import CUDA_DEVICE_COUNT, CUDA_IS_AVAILABLE
 
@@ -27,6 +28,12 @@ def test_special_modes():
     run("yolo settings reset")
     run("yolo cfg")
 
+
+@pytest.mark.skipif(not (ARM64 and MACOS), reason="Device is not Apple MPS.")
+def test_train_mps():
+    """Test YOLO training on Apple MPS devices."""
+    run("yolo train model=yolov8n.pt imgsz=32 epochs=1 device=mps")
+    
 
 @pytest.mark.parametrize("task,model,data", TASK_MODEL_DATA)
 def test_train(task, model, data):
