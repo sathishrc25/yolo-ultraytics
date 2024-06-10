@@ -52,7 +52,7 @@ class Colors:
             "7B0068",
             "FF1B6C",
             "FC6D2F",
-            "A2FF0B"
+            "A2FF0B",
         )
         self.palette = [self.hex2rgb(f"#{c}") for c in hexs]
         self.n = len(self.palette)
@@ -161,9 +161,23 @@ class Annotator:
 
     def box_label(self, box, label="", color=(128, 128, 128), txt_color=(255, 255, 255), rotated=False):
         """Add one xyxy box to image with label."""
-        txt_color = (0, 0, 0) if color in {(15, 255, 250), (254, 224, 5), (183, 223, 0), (1, 184, 255), (221, 111, 255),
-                                           (0, 237, 204), (68, 243, 0), (255, 255, 0), (179, 255, 1),
-                                           (11, 255, 162)} else txt_color
+        txt_color = (
+            (0, 0, 0)
+            if color
+            in {
+                (15, 255, 250),
+                (254, 224, 5),
+                (183, 223, 0),
+                (1, 184, 255),
+                (221, 111, 255),
+                (0, 237, 204),
+                (68, 243, 0),
+                (255, 255, 0),
+                (179, 255, 1),
+                (11, 255, 162),
+            }
+            else txt_color
+        )
 
         if isinstance(box, torch.Tensor):
             box = box.tolist()
