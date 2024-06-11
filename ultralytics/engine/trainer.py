@@ -88,7 +88,14 @@ class BaseTrainer:
         csv (Path): Path to results CSV file.
     """
 
-    def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
+    def __init__(
+        self,
+        cfg=DEFAULT_CFG,
+        overrides=None,
+        _callbacks=None,
+        override_label_transforms=None,
+        append_label_transforms=None,
+    ):
         """
         Initializes the BaseTrainer class.
 
@@ -96,6 +103,8 @@ class BaseTrainer:
             cfg (str, optional): Path to a configuration file. Defaults to DEFAULT_CFG.
             overrides (dict, optional): Configuration overrides. Defaults to None.
         """
+        self.override_label_transforms = override_label_transforms
+        self.append_label_transforms = append_label_transforms
         self.args = get_cfg(cfg, overrides)
         self.check_resume(overrides)
         self.device = select_device(self.args.device, self.args.batch)
@@ -126,6 +135,7 @@ class BaseTrainer:
             self.args.workers = 0  # faster CPU training as time dominated by inference, not dataloading
 
         # Model and Dataset
+        self.inputCh = 3 if self.args.inputCh is None else self.args.inputCh
         self.model = check_model_file_from_stem(self.args.model)  # add suffix, i.e. yolov8n -> yolov8n.pt
         self.trainset, self.testset = self.get_dataset()
         self.ema = None
