@@ -159,8 +159,20 @@ class Annotator:
         self.limb_color = colors.pose_palette[[9, 9, 9, 9, 7, 7, 7, 0, 0, 0, 0, 0, 16, 16, 16, 16, 16, 16, 16]]
         self.kpt_color = colors.pose_palette[[16, 16, 16, 16, 16, 0, 0, 0, 0, 0, 0, 9, 9, 9, 9, 9, 9]]
 
-    def box_label(self, box, label="", color=(128, 128, 128), txt_color=(104, 31, 17), rotated=False):
+    def box_label(self, box, label="", color=(128, 128, 128), txt_color=(255, 255, 255), rotated=False):
         """Add one xyxy box to image with label."""
+        if color in {(15, 255, 250), (254, 224, 5), (183, 223, 0), (1, 184, 255),
+                     (221, 111, 255), (0, 237, 204), (68, 243, 0), (255, 255, 0),
+                     (179, 255, 1), (11, 255, 162)}:
+            txt_color = (104, 31, 17)
+
+        elif color in {(255, 42, 4), (79, 68, 255), (255, 0, 189), (255, 180, 0),
+                       (186, 0, 221), (0, 192, 38), (255, 36, 125), (104, 0, 123),
+                       (108, 27, 255), (47, 109, 252)}:
+            txt_color = (255, 255, 255)
+        else:
+            txt_color = txt_color
+
         if isinstance(box, torch.Tensor):
             box = box.tolist()
         if self.pil or not is_ascii(label):
