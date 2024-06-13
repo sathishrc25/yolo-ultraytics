@@ -18,6 +18,7 @@ from ultralytics.nn.modules import (
     SPPELAN,
     SPPF,
     ADown,
+    BasicLayer,
     Bottleneck,
     BottleneckCSP,
     C2f,
@@ -907,6 +908,8 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             if m is HGBlock:
                 args.insert(4, n)  # number of repeats
                 n = 1
+        elif m is BasicLayer:
+            c2 = args[1] if args[3] else args[1] * 1
         elif m is ResNetLayer:
             c2 = args[1] if args[3] else args[1] * 4
         elif m is nn.BatchNorm2d:
